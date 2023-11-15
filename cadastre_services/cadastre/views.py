@@ -1,8 +1,10 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Cadastre
+from external_server.views import result
 import random
 import time
+import requests
 
 
 
@@ -24,10 +26,8 @@ def query(request):
         times_server = random.randint(1, 2)
         time.sleep(times_server)
 
-        # Вызываем функцию result для получения ответа
         answer = result(request)
 
-        # Извлекаем все поля из ответа
         try:
             parsed_answer = json.loads(answer.content)
             cadastre_number_from_answer = parsed_answer.get('cadastre_number')
@@ -35,13 +35,10 @@ def query(request):
             longitude_from_answer = parsed_answer.get('longitude')
             external_response_from_answer = parsed_answer.get('external_response')
 
-            # Ваш код для дальнейшей обработки полей
-
-            # Сохраняем результат в БД
             cadastre = Cadastre.objects.create(
-                cadastre_number=cadastre_number,
-                latitude=latitude,
-                longitude=longitude,
+                cadastre_number=cadastre_number_from_answer,
+                latitude=latitude_from_answer,
+                longitude=longitude_from_answer,
                 external_response=external_response_from_answer
             )
 

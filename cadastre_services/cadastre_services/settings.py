@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cadastre',
-    'history_api'
+    'history_api',
+    'external_server'
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cadastre',
         'USER': 'postgres',
-        'PASSWORD': '123123',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
