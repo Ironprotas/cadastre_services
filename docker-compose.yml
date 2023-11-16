@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db_cadatstre:
+    image: postgres:latest
+    container_name: postgres_cadastre
+    volumes:
+      - ~/.pg/pg_data/user:/var/lib/postgresql/data
+    env_file:
+      - .env
+    networks:
+      - cadastre_network
+  cadastre_services:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: cadastre_services
+    container_name: cadastre_services
+    depends_on:
+      - db_cadatstre
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - cadastre_network
+    command: >
+      bash -c "python manage.py migrate && cd  /user/cadastre_services && gunicorn -b 0.0.0.0:8000 cadastre_services.wsgi --timeout 600"
+      
+
+networks:
+  cadastre_network:

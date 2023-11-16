@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,13 +125,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 DATABASES = {
-    'default': {
+'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cadastre',
-        'USER': 'postgres',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv("POSTGRES_DB",'cadastre'),
+        'USER': os.getenv("POSTGRES_USER", 'postgres'),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD" ""),
+        'HOST': os.getenv("POSTGRES_HOST", 'localhost'),
+        'PORT': os.getenv("POSTGRES_PORT",'5432'),
     }
+
 }
+
